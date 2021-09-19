@@ -1,0 +1,58 @@
+program slau_gauss
+real, allocatable :: a(:,:), b(:), x(:)
+real c, S, M
+integer n,i,j,k, r
+write (*,*)'Vvedite chislo neizvestnykh'
+read(*,*) n
+allocate (a(n,n), b(n), x(n))
+do i=1,n
+write(*,*)'Vvedite',i,'-uju stroku rasshirennoj matrizy'
+do j=1,n
+read(*,*) a(i,j)
+enddo
+read(*,*) b(i)
+enddo
+do k=1,n
+max=abs(a(k,k))
+r=k
+do i=k+1,n
+if (abs(a(i,k))>max) then
+max=abs(a(i,k))
+r=i
+endif
+enddo
+do j=1,n
+c=a(k,j)
+a(k,j)=a(r,j)
+a(r,j)=c
+enddo
+c=b(k)
+b(k)=b(r)
+b(r)=c
+do i=k+1,n
+M=a(i,k)/a(k,k)
+do j=k,n
+a(i,j)=a(i,j)-M*a(k,j)
+enddo
+b(i)=b(i)-M*b(k)
+enddo
+enddo
+if (a(n,n)==0) then
+if (b(n)==0) then
+write(*,*)'Beskonechnoe mnozhestvo reshenij'
+go to 1
+endif
+write(*,*)'Net reshenij'
+go to 1
+endif
+do i=n,1,-1
+S=0
+do j=i+1,n
+S=S+a(i,j)*x(j)
+enddo
+x(i)=(b(i)-S)/a(i,i)
+enddo
+do i=1,n
+write (*,*)'x',i,'=',x(i)
+enddo
+1 end
