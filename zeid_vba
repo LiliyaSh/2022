@@ -1,0 +1,77 @@
+Private Sub метод_Зейделя_Click()
+Range("A1:L100").Clear
+eps = 0.01
+' ввод СЛАУ
+n = Val(InputBox("Введи число строк матрицы"))
+ReDim a(n, n), b(n), bt(n), at(n, n), x0(n), x(n)
+Cells(1, 1) = "Матрица коэффициентов Аi"
+Cells(1, 5) = "Вектор  свободных членов Bi"
+For i = 1 To n
+For j = 1 To n
+a(i, j) = Val(InputBox("a(" + Str(i) + "," + Str(j) + ")=", "Введи коэффициенты при неизвестных"))
+Next j
+Next i
+For i = 1 To n
+b(i) = Val(InputBox("b(" + Str(i) + ")=", "Введи свободные члены"))
+Next i
+' Проверка условия сходимости СЛАУ
+ 
+For i = 1 To n
+s = 0
+For j = 1 To n
+If j <> i Then
+s = s + Abs(a(i, j))
+      If s >= Abs(a(i, i)) Then
+      f = MsgBox("СЛАУ не сходится", vbCritical, "Проверка условия сходимости")
+      End
+      End If
+End If
+Next j
+Next i
+ 
+' Поиск решения
+For i = 1 To n
+For j = 1 To n
+Cells(i + 1, j) = a(i, j)
+Cells(i + 1, 5) = b(i)
+Next j
+Next i
+For i = 1 To n
+bt(i) = b(i) / a(i, i)
+x0(i) = bt(i)
+For j = 1 To n
+If i = j Then
+at(i, j) = 0
+Else
+at(i, j) = -a(i, j) / a(i, i)
+End If
+Next j
+Next i
+k = 0
+Do
+e = 0
+max = 0
+k = k + 1
+For i = 1 To n
+s = 0
+For j = 1 To n
+s = s + at(i, j) * x0(j)
+Next j
+x(i) = x0(i)
+x0(i) = bt(i) + s
+Next i
+For i = 1 To n
+e = Abs(x(i) - x0(i))
+If e > max Then
+max = e
+End If
+Next i
+Loop While max > eps
+ 
+' Вывод решений СЛАУ
+ For i = 1 To n
+Cells(i + 11, 1) = x0(i)
+Next i
+Cells(22, 1) = "Число итераций"
+Cells(23, 1) = k
+End Sub
