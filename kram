@@ -1,0 +1,94 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+void clearMemory(double** a, int n) { 
+    for (int i = 0; i < n; i++) 
+        delete[] a[i];
+    delete[] a;
+}
+
+double findDet(double** a, int n) {
+    if (n == 1)
+        return a[0][0];
+    else if (n == 2)
+        return a[0][0] * a[1][1] - a[0][1] * a[1][0];
+    else {
+        int d = 0;
+        for (int k = 0; k < n; k++) {
+            double** b = new double* [n - 1];
+            for (int i = 0; i < n - 1; i++) 
+                b[i] = new double[n - 1];
+            for (int i = 1; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (j == k)
+                        continue;
+                    else if (j < k)
+                        b[i - 1][j] = a[i][j];
+                    else
+                        b[i - 1][j - 1] = a[i][j];
+                }
+            }
+            d += pow(-1, k + 2) * a[0][k] * findDet(b, n - 1);
+            clearMemory(b, n - 1);
+        }
+        return d;
+    }
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int n;
+    int tmp, det, dTemp;
+    cout << "Введите размерность матрицы:" << endl;
+    cout << "n = ";
+    cin >> n;
+    double** A = new double* [n];
+    for (int i = 0; i < n; i++)
+        A[i] = new double[n];
+
+    double*** B = new double** [n];
+    for (int i = 0; i < n; i++)
+    {
+        B[i] = new double* [n];
+        for (int j = 0; j < n; j++)
+            B[i][j] = new double[n];
+    }
+
+    double* X = new double[n];
+    double* root = new double[n];
+
+    cout << "Введите матрицу:" << endl;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++) {
+            cout << "a[" << i + 1 << "," << j + 1 << "]= ";
+            cin >> A[i][j];
+        }
+            
+
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                B[k][i][j] = A[i][j];
+
+    cout << "Введите вектор свободных членов:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "b[" << i + 1 << "]= ";
+        cin >> X[i];
+    }
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++) 
+            B[k][i][k] = X[i];
+
+    dTemp = findDet(A, n); 
+    cout << "Искомые корни:" << endl;
+    cout.precision(3); 
+    for (int i = 0; i < n; i++) {
+        root[i] = findDet(B[i], n) / dTemp;
+        cout << fixed << "x" << i + 1 << ": " << root[i] << endl;
+    }
+
+    return 0;
+}
