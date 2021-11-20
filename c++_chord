@@ -1,0 +1,22 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+double f(double x) {
+    return x * x * x - 0.2 * x * x + 0.3 * x - 1.2;
+}
+
+double find(double infinum, double supremum, double epsilon) {
+    while (fabs(supremum - infinum) > epsilon) {
+        infinum = supremum - (supremum - infinum) * f(supremum) / (f(supremum) - f(infinum));
+        supremum = infinum - (infinum - supremum) * f(infinum) / (f(infinum) - f(supremum));
+    }
+    return supremum;
+}
+
+int main() {
+    double a = 0.5, b = 2.0;
+    cout << "x = " << find(a, b, 0.001) << endl;
+    return 0;
+}
