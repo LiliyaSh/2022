@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cmath>
+#include<iomanip>
+#include<conio.h>
+using namespace std;
+int k = 0;
+
+float f(float x) {
+    float y;
+    y = x*x*x+3*x*x-24*x+10;
+    return y;
+}
+
+float f1(float x) { 
+    float z;
+    z = 3*x*x+6*x-24;
+    return z;
+}
+
+float f2(float x) { 
+    float u;
+    u = 6*x+6;
+    return u;
+}
+
+float function(float b, float a, float e) {
+    float c;
+    do {
+        if (f(a) * f2(a) < 0) {
+            a = a + (b - a) / (f(a) - f(b)) * f(a);
+            b = b - f(b) / f1(b);
+        }
+        else if (f(a) * f2(a) > 0) {
+            a = a - f(a) / f1(a); 
+            b = b + (b - a) / (f(b) - f(a)) * f(b);
+        }
+        else {
+            cout << "can't solve\n";
+            break;
+        }
+        k++;
+    } while (fabs(b - a) > e);
+    return (a + b) / 2.0;
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    float a, b, e;
+    cout << "Введите границы, в которых расположен корень a: ";
+    cin >> a;
+    cout << "b: ";
+    cin >> b;
+    cout << "Введите эпсилон: ";
+    cin >> e;
+    cout << "x= " << function(a, b, e);
+    return 0;
+}
