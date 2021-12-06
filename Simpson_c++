@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream> 
+#include <math.h>
+
+using namespace std;
+
+#define N 1000
+
+double F(double x) { return sin(x)/(x+1); } 
+
+int main()
+{
+	int i, n;
+	double a, b, h, Y[N], S, T;
+	setlocale(LC_ALL, "Russian");
+	cout << "\n Введите число отрезков : n = ";
+	cin >> n;
+	if (n % 2) n -= 1;
+	cout << "\n Введите начало интервала : a = ";
+	cin >> a;
+	cout << "\n Введите конец интервала : b = ";
+	cin >> b;
+	h = (b - a) / n;
+	for (i = 0; i <= n; i++) Y[i] = F(a + i * h);  
+	S = 0;
+	for (i = 1; i < n; i += 2) { S += h * (Y[i - 1] + 4 * Y[i] + Y[i + 1]) / 3; }  
+	cout << "\n Интеграл по методу Симпсона-Игнатьева : S = " << S << "\n";
+	return 0;
+}
