@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <conio.h>
+#include <tchar.h>
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+
+
+double func(double x) {
+    return (1+0.4*x*x)/(1.2+sqrt(1.2*x*x+1));
+}
+int main() {
+    double a_x = 1.4, b_x = 2.84, n = 3;
+    double h = 1, S, I2 = 1;
+    double integral = 0;
+    int i;
+
+    I2 = integral;
+    h = (b_x - a_x) / n;
+    S = 0;
+    for (i = 1; i < n; i++) {
+        if (i % 3 == 0)
+            S = S + 2 * func(a_x + h * i);
+        else
+            S = S + 3 * func(a_x + h * i);
+    }
+    integral = (3 * h / 8) * (func(a_x) + func(b_x) + S);
+    printf("integral = %f\n", integral);
+
+    return 0;
+}
