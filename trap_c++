@@ -1,0 +1,29 @@
+#include <iostream>
+#include <math.h>
+#include <conio.h>
+#include <stdio.h>
+
+typedef double(*function)(double);
+ 
+double integral(function f, double a, double b, unsigned step_count) {
+  double sum = .0, step;
+  size_t i;
+  if (0 == step_count) return sum;
+ 
+  step = (b - a) / (1.0 * step_count);
+  for ( i = 1 ; i < step_count ; ++i ) {
+    sum += f (a + i * step);
+  }
+  sum += (f(a) + f(b)) / 2;
+  sum *= step; 
+  return sum;
+}
+ 
+double f (double x) {
+  return 1/sqrt(x*x-1);
+}
+ 
+int main() {
+  printf ("answer = %f\n", integral(f, 2, 3.5, 10));
+  return 0;
+}
