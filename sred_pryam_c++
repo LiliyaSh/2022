@@ -3,19 +3,19 @@
 #include <conio.h>
 #include <stdio.h>
 
-double InFunction(double x) {   
-    return sin(0.7*x+0.4)/(2.2+cos(0.3*x*x+0.7)); 
+double InFunction(double x) {
+    return sin(0.7 * x + 0.4) / (2.2 + cos(0.3 * x * x + 0.7));
 }
 
-double CalcIntegral(double a, double b, int n){
+double CalcIntegral(double a, double b, int n) {
     double result, h;
     int i;
 
-    h = (b - a) / n; 
+    h = (b - a) / n;
     result = 0;
 
     for (i = 1; i <= n; i++)
-        result += InFunction(a + h * i - h / 2); 
+        result += InFunction(a + h * i - h / 2);
 
     result *= h;
 
@@ -23,8 +23,6 @@ double CalcIntegral(double a, double b, int n){
 }
 
 int main() {
-    double integral;
-    integral = CalcIntegral(0.5, 1.3, 10);
-    printf("The value of the integral is: %lf \n", integral);
+    printf("The value of the integral is: %lf \n", (CalcIntegral(0.5, 1.3, 8)+ CalcIntegral(0.5, 1.3, 10))/2);
     return 0;
 }
