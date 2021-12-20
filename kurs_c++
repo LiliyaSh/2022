@@ -1,0 +1,76 @@
+#include <conio.h>
+#include <stdio.h>
+#include <math.h>
+#include <iomanip>
+#include <iostream>
+using namespace std;
+const int n = 50;
+const int m = 50;
+const double pi = 3.14159265358979323846264338327950288419716939931;
+int var = 1;
+double a = pi / 2.0, T = 0.3;
+double U(double x, double t) {
+	if (var == 1)
+		return exp(0.0 - t) * cos(x);
+}
+
+double F(double x) { return U(x, 0); }
+
+double M1(double t) { return U(0, t); }
+
+double M2(double t) { return U(T, t); }
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	double he = a / n, Te = T / m;
+	double L = Te / (he * he);
+	double A = L, B = L, C = 2 * L + 1;
+	double x[n + 1];
+	for (int i = 0; i <= n; i++)
+		x[i] = 0 + i * he;
+
+	double t[m + 1];
+	for (int j = 0; j <= m; j++)
+		t[j] = 0 + Te * j;
+
+	double alpha[n + 1];
+	double beta[n + 1];
+	double u[n + 1][m + 1];
+
+	for (int i = 0; i < n + 1; i++)
+		for (int j = 0; j < m + 1; j++)
+			u[i][j] = 0;
+
+	for (int j = 0; j <= m; j++) {
+		u[0][j] = U(0, t[j]);
+		if (var == 1)u[n][j] = 0;
+		else u[n][j] = U(a, t[j]);
+	}
+
+	for (int i = 0; i <= n; i++)
+		u[i][0] = U(x[i], 0);
+
+	for (int j = 0; j < m; j++) {
+		alpha[1] = 0;
+		beta[1] = M1(t[j + 1]);
+		for (int i = 1; i < n; i++) {
+			alpha[i + 1] = B / (C - (A * alpha[i]));
+			beta[i + 1] = (0.0 - u[i][j] - A * beta[i]) / (A * alpha[i] - C);
+		}
+		for (int i = n - 1; i > 0; i--)
+			u[i][j + 1] = alpha[i + 1] * u[i + 1][j + 1] + beta[i + 1];
+	}
+
+	double max = -1;
+	cout << "Точка     Приближенное   Точное    Погрешность" << endl;
+	for (int i = 0; i < n + 1; i++) {
+		int j = m;
+		cout << x[i] << setw(13) << u[i][j] << setw(14) << U(x[i], t[j]) << setw(14) << abs(u[i][j] - U(x[i], t[j])) << endl;
+		if (abs(u[i][j] - U(x[i], t[j])) > max)
+			max = abs(u[i][j] - U(x[i], t[j]));
+		cout << endl;
+	}
+	cout << endl << endl << "Максимальная погрешность = " << max << endl;
+
+	return 0;
+}
