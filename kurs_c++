@@ -11,7 +11,7 @@ int var = 1;
 double a = pi / 2.0, T = 0.3;
 double U(double x, double t) {
 	if (var == 1)
-		return exp(0.0 - t) * cos(x);
+		return exp(0.0 - t) * 30 * cos(x);
 }
 
 double F(double x) { return U(x, 0); }
