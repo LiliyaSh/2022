@@ -3,7 +3,7 @@
 using namespace std;
 
 double dy(double x, double y) {
-	return 0.276 * (x * x + sin(1.6 * x)) + 0.988 * y;
+	return 0.232 * (x * x + sin(1.4 * x)) + 1.453 * y;
 }
 
 int main() {
