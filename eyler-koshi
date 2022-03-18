@@ -1,0 +1,20 @@
+#include <math.h>
+#include <iostream>
+using namespace std;
+
+double dy(double x, double y) {
+	return 0.232 * (x * x + sin(1.4 * x)) + 1.453 * y;
+}
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	double x = 0.2;
+	double y = 0.25;
+	double y1, dy1, hy = 0;
+	for (int i = 0; i < 11; i++) {
+		cout << "x" << i << ": " << x << "   y" << i << ": " << y << endl;
+		y = y + 0.05 * (dy(x, y) + dy(x + 0.1, y + 0.1 * dy(x, y)));
+		x += 0.1;
+	}
+	return 0;
+}
