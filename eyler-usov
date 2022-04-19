@@ -1,0 +1,27 @@
+#include <math.h>
+#include <iostream>
+using namespace std;
+
+double dy(double x, double y) {
+	return x + sin(y/sqrt(3));
+}
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	double x = 1.8;
+	double y = 2.6;
+	double dif = 10;
+	double buf1 = 0;
+	double buf2 = 0;
+	double buf3 = 0;
+
+	for (int i = 0; i < 11; i++) {
+		cout << "x" << i << ": " << x << "   y" << i << ": " << y << endl;
+		buf1 = y + 0.1 * dy(x, y);
+		buf2 = y + 0.05 * (dy(x, y) + buf1);
+		buf3 = y + 0.05 * (dy(x, y) + buf2);
+		y = buf3;
+		x += 0.1;
+	}
+	return 0;
+}
