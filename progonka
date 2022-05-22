@@ -1,0 +1,52 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	int i;
+	double a0, a1, a, b0, b1, b, h, p, q, x0, x1, m[7], n[7], fh[7], c[7], d[7], y[7];
+	a0 = 2;
+	a1 = 1;
+	a = 1;
+	b0 = 1;
+	b1 = 0;
+	b = 2;
+	q = -1;
+	x0 = 0.3;
+	x1 = 0.6;
+	h = 0.05;
+	p = x0 * 2;
+	m[0] = (2 * h * h * q - 4) / (2 + h * p);
+	n[0] = (2 - h * p) / (2 + h * p);
+	fh[0] = 2 * h * h / (2 + h * p);
+	c[0] = a1 / (a0 * h - a1);
+	d[0] = (a * h) / a1;
+	x0 += h;
+	i = 1;
+	while (x0 <= x1) {
+		p = x0 * 2;
+		m[i] = (2 * h * h * q - 4) / (2 + h * p);
+		n[i] = (2 - h * p) / (2 + h * p);
+		fh[i] = 2 * h * h / (2 + h * p);
+		c[i] = 1 / (m[i] - n[i] * c[i - 1]);
+		d[i] = fh[i] - n[i] * c[i - 1] * d[i - 1];
+		i += 1;
+		x0 += h;
+	}
+
+	i -= 1;
+	y[i] = (b * h + b1 * c[i] * d[i]) / (b0 * h + b1 * (c[i] + 1));
+	i -= 1;
+
+	while (i > -1) {
+		y[i] = c[i] * (d[i] - y[i + 1]);
+		i -= 1;
+	}
+
+	x0 = 0.3;
+	for (int i = 0; i < 7; i++) {
+		cout << "x" << i << " = " << x0 << "y" << i << " = " << y[i] << endl;
+	}
+
+	return 0;
+}
